@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - ${HTTP_PORT}:80
+        environment:
+            PMA_HOST: mysql
+            PMA_USER: ${PMA_USER}
+            PMA_PASSWORD: ${PMA_PASSWORD}
+
+    mysql:
+        build: alpine-ssh
+        volumes:
+            - ${SSH_AUTH_SOCK}:/ssh-agent
+        environment:
+            SSH_AUTH_SOCK: '/ssh-agent'
+        entrypoint: ["ssh", "-o", "StrictHostKeyChecking=no", "-NL", "*:3306:127.0.0.1:3306", "-p", "${REMOTE_PORT}", "${REMOTE_HOST}"]
