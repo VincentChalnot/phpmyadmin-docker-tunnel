@@ -20,4 +20,5 @@ start: .env
 .PHONY: stop
 stop:
 	@docker-compose down
+	@rm .env
 	@echo "\n\033[1;31mStopped\033[0m"
